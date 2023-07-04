@@ -4,7 +4,6 @@ import numpy as np
 
 CONST_DLL_VJOY = "C:\\Program Files\\vJoy\\x64\\vJoyInterface.dll"
 
-
 class vJoy(object):
     def __init__(self, reference = 1):
         self.handle = None
@@ -22,7 +21,6 @@ class vJoy(object):
             self.acquired = False
             return True
         return False
-
 
     def generateJoystickPosition(self, 
         wThrottle = 0, wRudder = 0, wAileron = 0,
@@ -46,7 +44,6 @@ class vJoy(object):
         # 4 = x  5 = x+a ?? 6 = x+b
         # 8 = y
         lButtons = 0, bHats = 0, bHatsEx1 = 0, bHatsEx2 = 0, bHatsEx3 = 0):
-    
         
         """
         typedef struct _JOYSTICK_POSITION
@@ -96,9 +93,7 @@ class vJoy(object):
             return True
         return False
                 
-
 vj = vJoy()
-
 
 # valueX, valueY between -1.0 and 1.0
 # scale between 0 and 16000
@@ -107,7 +102,6 @@ def setJoy(valueX, valueY, scale):
     yPos = int(valueY*scale)
     joystickPosition = vj.generateJoystickPosition(wAxisX = 16000+xPos, wAxisY = 16000+yPos)
     vj.update(joystickPosition)
-
 
 def test():
     time.sleep(3)
@@ -132,7 +126,6 @@ def test():
     vj.sendButtons(0)
     print("vj closing", flush=True)
     vj.close()
-
     
 def look_right():
     vj.open()
@@ -163,10 +156,5 @@ def steer_right():
     vj.update(joystickPosition)
     vj.close()
 
-
 if __name__ == '__main__':
-    #test()
-    #test5()
-    #look_right()
-    #throttle()
     steer_right()

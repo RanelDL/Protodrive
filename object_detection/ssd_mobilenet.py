@@ -5,9 +5,8 @@ import argparse
 import cv2
 import time
 import threading
-from GUI.Display_Window_kivy import CamApp#from GUI.Display_Window_kivy_original import CamApp
+from GUI.Display_Window_kivy import CamApp
 from utils.grabscreen import grab_screen
-
 
 # construct the argument parse 
 parser = argparse.ArgumentParser(
@@ -25,7 +24,6 @@ parser.add_argument("--thr", default=0.35, type=float, help="confidence threshol
 parser.add_argument("--gui",default = True, help = "choose wether to show graphical window or not, default is True")
 args = parser.parse_args()
 
-
 # select relevant classes from detection possibilities
 classNames = { 2: 'bicycle', 6: 'bus', 7: 'car', 
     14: 'motorbike', 15: 'person',  19: 'train' }
@@ -37,13 +35,9 @@ net = cv2.dnn.readNetFromCaffe(args.prototxt, args.weights)
 img = cv2.imread('object_detection\logo1.png',-1)
 
 ''' gui ON/OFF '''
-#args.gui = False
-#if args.gui == True:
 # Load the graphical display
 gui = CamApp()
 gui_thread = threading.Thread(target = gui.run)
-
-
 
 start_count = 0 # 0-thread yet to be started,1-starting thread
 def detection_loop(steering_angle):
@@ -86,7 +80,6 @@ def detection_loop(steering_angle):
         confidence = detections[0, 0, i, 2] #Confidence of prediction
         if confidence > args.thr: # Filter prediction
             class_id = int(detections[0, 0, i, 1]) # Class label
-            #print(class_id)
 
             # Object location
             xLeftBottom = int(detections[0, 0, i, 3] * cols)
@@ -132,15 +125,8 @@ def detection_loop(steering_angle):
                                 (int((xRightTop+xLeftBottom)/2-65),
                                 int((yRightTop+yLeftBottom)/2)),
                                 cv2.FONT_HERSHEY_SIMPLEX,1, (0, 0, 255),2)
-    #cv2.imshow('frame', frame)
-    #if cv2.waitKey(25) & 0xFF == ord("q"):
-        #cv2.destroyAllWindows()
-    #if args.gui ==True:
     gui.frame = frame
     gui.wheel_ang = steering_angle
 
-
-
-    #yield diag_len
     return diag_len
 

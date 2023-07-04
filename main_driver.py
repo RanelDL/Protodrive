@@ -12,7 +12,6 @@ from steering.driving_prediction import steer_loop
 from object_detection.ssd_mobilenet import detection_loop
 from utils.getkeys import key_check
 
-
 class Driver:
     def __init__(self):
         self.steering_angle = Value('d', 0.0)
@@ -63,8 +62,6 @@ class Driver:
                 self.diag_len.value = 0
                 self.diag_len.release() 
             
-
-    
     ### Joystick car input feeder 
     def setJoy_Steer_Throttle_Brake (self,value_steerX, value_throttleX, brake_state,scale = 16384):
         value_steerX = value_steerX +1
@@ -88,13 +85,9 @@ class Driver:
         while True:
             throttle = self.throttle.value
             brake = 0
-            #print(self.diag_len.value)
-            #self.diag_len.acquire()
             if self.diag_len.value != None:
-                #print("diaginal len:", self.diag_len.value)
                 # Detected object is too close so STOP
                 if self.diag_len.value >= 150:
-                    #print("stop")
                     throttle = -1.0
                     steering_angle = 0.0
                     brake = 1

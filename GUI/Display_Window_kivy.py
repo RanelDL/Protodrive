@@ -34,7 +34,6 @@ class CamApp(App):
         dst = cv2.warpAffine(self.wheel_img, M, (self.cols, self.rows))
         dst = cv2.flip(dst, -1)
         cv2.imwrite('utils\\steering_wheel_image - Copy.jpg',dst)
-        #cv2.imwrite('steering_wheel_image - Copy.jpg', dst)
 
     def build(self):
         # object detect frame

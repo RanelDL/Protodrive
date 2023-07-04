@@ -72,8 +72,6 @@ def steer_loop():
         throttle = prediction[1]
         steering_angle = math.atan(steering_angle*1.6)
         
-        
         prediction = [steering_angle,throttle]
-        
         yield prediction
        

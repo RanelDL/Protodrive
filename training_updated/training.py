@@ -217,7 +217,6 @@ def random_augment(image, choice):
       image, choice = img_random_flip(image, choice)      
     return image, choice
 
-
 def batch_generator(train_data_to_generate, batch_size, istraining):
   while True:
     batch_img = []
@@ -279,7 +278,6 @@ def get_model(input_shape):
     ])
     
     return model
-
 
 #new pilotnet
 model = get_model((WIDTH, HEIGHT,1))
