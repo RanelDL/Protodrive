@@ -8,7 +8,7 @@ import threading
 from GUI.Display_Window_kivy import CamApp
 from utils.grabscreen import grab_screen
 
-# construct the argument parse 
+# Construct the argument parse 
 parser = argparse.ArgumentParser(
     description='Script to run MobileNet-SSD object detection network ')
 parser.add_argument("--video", help="path to video file. If empty, camera's stream will be used")
@@ -24,14 +24,14 @@ parser.add_argument("--thr", default=0.35, type=float, help="confidence threshol
 parser.add_argument("--gui",default = True, help = "choose wether to show graphical window or not, default is True")
 args = parser.parse_args()
 
-# select relevant classes from detection possibilities
+# Select relevant classes from detection possibilities
 classNames = { 2: 'bicycle', 6: 'bus', 7: 'car', 
     14: 'motorbike', 15: 'person',  19: 'train' }
 
-#Load the Caffe model
+# Load the Caffe model
 net = cv2.dnn.readNetFromCaffe(args.prototxt, args.weights)
 
-#not using gpu support (using gpu adds ~10 fps)
+# Load the image (not using gpu support (using gpu adds ~10 fps))
 img = cv2.imread('object_detection\logo1.png',-1)
 
 ''' gui ON/OFF '''
@@ -39,8 +39,24 @@ img = cv2.imread('object_detection\logo1.png',-1)
 gui = CamApp()
 gui_thread = threading.Thread(target = gui.run)
 
-start_count = 0 # 0-thread yet to be started,1-starting thread
+start_count = 0 # 0-thread yet to be started, 1-starting thread
 def detection_loop(steering_angle):
+    """
+    This function performs object detection using the MobileNet-SSD model.
+    It takes a steering angle as input and returns the diagonal length of the detected object.
+
+    Parameters:
+        steering_angle (float): The steering angle for the detection loop.
+
+    Returns:
+        diag_len (float): The diagonal length of the detected object.
+
+    Example:
+        # Steering_angle is calculated in another part of the code
+        angle = calculate_steering_angle()
+        diag_length = detection_loop(angle)
+        print(diag_length)
+    """
     global start_count
     #if args.gui == True:
     if start_count ==0:
@@ -50,7 +66,7 @@ def detection_loop(steering_angle):
     #while True:
     diag_len = None
 
-    # take screenshot of the screen
+    # Take screenshot of the screen
     frame = grab_screen(region=(30,205,800,640))
 
     '''-----------------SSD MOBILENET IMPLEMENTATION---------------------------------'''
@@ -63,19 +79,19 @@ def detection_loop(steering_angle):
     # after executing this command our "blob" now has the shape:
     # (1, 3, 300, 300) batch size, channels (BGR), height , width
     blob = cv2.dnn.blobFromImage(frame_resized, 0.007843, (300, 300), (127.5, 127.5, 127.5), False)
-    #Set to network the input blob
+    # Set the input blob for the network
     net.setInput(blob)
-    #Prediction of network
+    # Perform prediction
     detections = net.forward()
     print(detections.shape)
 
-    #Size of frame resize (300x300)
+    # Size of frame resize (300x300)
     cols = frame_resized.shape[1]
     rows = frame_resized.shape[0]
 
     # To get the class and location of detected object
-    # There is a fixed index for class and location and confidence
-    # values reside in detections array .
+    # there is a fixed index for class, location and confidence
+    # values in the detections array.
     for i in range(detections.shape[2]):
         confidence = detections[0, 0, i, 2] #Confidence of prediction
         if confidence > args.thr: # Filter prediction
@@ -109,7 +125,7 @@ def detection_loop(steering_angle):
 
                 yLeftBottom = max(yLeftBottom, labelSize[1])
 
-                #draw label of object
+                # Draw label of object
                 cv2.rectangle(frame, (xLeftBottom, yLeftBottom - labelSize[1]),
                                      (xLeftBottom + labelSize[0],
                                       yLeftBottom + baseLine),
@@ -118,7 +134,7 @@ def detection_loop(steering_angle):
                 cv2.putText(frame, label, (xLeftBottom, yLeftBottom),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0))
 
-                #warning sign
+                # Warning sign
                 diag_len = np.sqrt((xLeftBottom-xRightTop)**2+(yLeftBottom-yRightTop)**2)
                 if diag_len >150:
                     cv2.putText(frame, "WARNING!",

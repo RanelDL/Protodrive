@@ -1,5 +1,4 @@
 # import kivy
-
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
@@ -10,7 +9,35 @@ import math
 import cv2
 
 class CamApp(App):
+    """
+    This class represents a camera application that displays a frame with a steering wheel image overlay.
+    It rotates the steering wheel image based on the angle provided.
+
+    Attributes:
+        frame: The current frame captured by the camera.
+        ang: The angle of the steering wheel.
+        wheel_img: The image of the steering wheel.
+        wheel_ang: The current angle of the steering wheel.
+        rows: The number of rows in the wheel image.
+        cols: The number of columns in the wheel image.
+        smoothed_angle: The smoothed angle of the steering wheel.
+
+    Methods:
+        rotate_wheel: Rotates the steering wheel image based on the angle.
+        build: Builds the user interface with the frame, steering wheel, and logo.
+        update: Updates the frame and rotates the steering wheel if necessary.
+
+    """
     def __init__(self, frame = None, ang = 0, *args):
+        """
+        Initializes the CamApp object.
+
+        Parameters:
+            frame: The current frame captured by the camera.
+            ang: The angle of the steering wheel.
+            *args: Additional arguments.
+
+        """
         super(CamApp, self).__init__(*args)
 
         self.frame = frame
@@ -36,6 +63,13 @@ class CamApp(App):
         cv2.imwrite('utils\\steering_wheel_image - Copy.jpg',dst)
 
     def build(self):
+        """
+        Builds the user interface with the frame, steering wheel, and logo.
+
+        Returns:
+            layout: The layout containing the frame, steering wheel, and logo.
+
+        """
         # object detect frame
         try:
             self.screen = Image(source=self.frame)
@@ -43,7 +77,7 @@ class CamApp(App):
             self.screen = Image()
             print(e)
             
-        #steering wheel as frame
+        # steering wheel as frame
         self.wheel = Image(source ='utils\\steering_wheel_image - Copy.jpg')
         self.logo = Image(source='GUI\logo1.png')
         print(self.logo)
@@ -72,6 +106,3 @@ class CamApp(App):
             texture1.blit_buffer(buf, colorfmt='rgb', bufferfmt='ubyte')
             # display image from the texture
             self.screen.texture = texture1
-
-
-
