@@ -4,7 +4,7 @@ if os.name == 'nt':
     import pyvjoy
 import keyboard
 
-from controller_mappings import (XBOX_TO_PYVJOY, PYGAME_TO_XBOX)
+from controller_and_mappings import (XBOX_TO_PYVJOY, PYGAME_TO_XBOX)
 
 class PyvJoyXboxController:
     def __init__(self, data_key_labels, button_threshold=0.5):
