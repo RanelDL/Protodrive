@@ -18,6 +18,8 @@ Simple self-driving car simulation, final project of Software Engineering class,
 ### Chosen Algorithms:
 Object detection: SSD MobileNet
 * Mobile-friendly, chosen for its speed and efficiency.
+* Using a compact object detection model (with a small amount of classes) yields faster results during runtime and
+  removes avoidable computational load.
 
 Steering: Nvidia's PilotNet
 * The model is of a discriminative type, focusing on classifying inputs into output values, as opposed to generative models that create new examples after learning the database.
