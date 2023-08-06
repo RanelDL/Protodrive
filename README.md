@@ -3,7 +3,7 @@
 
 Simple self-driving car simulation, final project of Software Engineering class, HS senior year.
 
-## Instructions:
+## Running Instructions:
     1. Run "pip install -r requirements.txt" in cmd.
     2. Find a pov video of a car driving on a road. 
     3. Run main_driver.py.
